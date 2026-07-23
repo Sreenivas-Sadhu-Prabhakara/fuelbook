@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  /* rendered locally to og-image.png — never served under the CSP */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    background:
+      radial-gradient(1000px 560px at 18% -10%, rgba(16, 80, 95, 0.85), transparent 62%),
+      radial-gradient(820px 500px at 96% 108%, rgba(224, 178, 110, 0.14), transparent 58%),
+      linear-gradient(175deg, #05262E 0%, #062E38 55%, #073540 100%);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #F2E9D8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .dial {
+    position: absolute;
+    left: 12px; top: 40px;
+    width: 640px; height: 560px;
+  }
+  .copy {
+    position: absolute;
+    right: 76px; top: 120px;
+    width: 470px;
+    display: flex; flex-direction: column; gap: 28px;
+  }
+  .copy h1 {
+    font-size: 56px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.12;
+  }
+  .copy h1 em { font-style: normal; color: #E0B26E; }
+  .copy p {
+    font-size: 27px; font-weight: 500; line-height: 1.4; color: #BDD2D2;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+  .chip {
+    font-size: 21px; font-weight: 650;
+    color: #F2E9D8;
+    border: 2px solid #1E667A;
+    border-radius: 999px;
+    padding: 8px 20px;
+    background: rgba(16, 80, 95, 0.45);
+  }
+</style>
+</head>
+<body>
+  <!-- one large E-to-F dial; the wordmark rides the needle line -->
+  <svg class="dial" viewBox="0 0 640 560" aria-hidden="true">
+    <!-- arc -->
+    <path d="M64 470 A256 256 0 0 1 576 470" fill="none" stroke="#10505F" stroke-width="30" stroke-linecap="round"/>
+    <path d="M64 470 A256 256 0 0 1 576 470" fill="none" stroke="#0F6E85" stroke-width="10" stroke-linecap="round"/>
+    <!-- ticks: E, quarter, half, three-quarter, F -->
+    <line x1="64"  y1="470" x2="104" y2="470" stroke="#F2E9D8" stroke-width="9" stroke-linecap="round" transform="rotate(0 320 470)"/>
+    <line x1="64"  y1="470" x2="104" y2="470" stroke="#7FA8B0" stroke-width="7" stroke-linecap="round" transform="rotate(45 320 470)"/>
+    <line x1="64"  y1="470" x2="104" y2="470" stroke="#7FA8B0" stroke-width="7" stroke-linecap="round" transform="rotate(90 320 470)"/>
+    <line x1="64"  y1="470" x2="104" y2="470" stroke="#7FA8B0" stroke-width="7" stroke-linecap="round" transform="rotate(135 320 470)"/>
+    <line x1="64"  y1="470" x2="104" y2="470" stroke="#F2E9D8" stroke-width="9" stroke-linecap="round" transform="rotate(180 320 470)"/>
+    <!-- E / F labels -->
+    <text x="64" y="530" font-family="system-ui, sans-serif" font-size="44" font-weight="800" fill="#F2E9D8" text-anchor="middle">E</text>
+    <text x="576" y="530" font-family="system-ui, sans-serif" font-size="44" font-weight="800" fill="#E0B26E" text-anchor="middle">F</text>
+    <!-- needle pointing near F, wordmark on the needle line -->
+    <line x1="320" y1="470" x2="524" y2="330" stroke="#E0B26E" stroke-width="14" stroke-linecap="round"/>
+    <text x="342" y="440" font-family="system-ui, sans-serif" font-size="64" font-weight="800" letter-spacing="-0.03em" fill="#F2E9D8" transform="rotate(-34.5 320 470)">fuelbook</text>
+    <circle cx="320" cy="470" r="26" fill="#E0B26E"/>
+    <circle cx="320" cy="470" r="10" fill="#062E38"/>
+  </svg>
+
+  <div class="copy">
+    <h1>Honest tank-to-tank <em>km/L</em> and true cost per km</h1>
+    <p>A fill-up log that computes real mileage the full-to-full way — limits stated on screen.</p>
+    <div class="chips">
+      <span class="chip">no account</span>
+      <span class="chip">no cloud</span>
+      <span class="chip">no ads</span>
+      <span class="chip">works offline</span>
+    </div>
+  </div>
+</body>
+</html>

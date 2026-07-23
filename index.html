@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'">
+  <title>fuelbook — fuel mileage calculator &amp; fill-up log (true km/L and cost per km)</title>
+  <meta name="description" content="Fuel mileage calculator and fill-up log: honest tank-to-tank km/L and true all-in cost per km for your vehicle. No account, no cloud, no ads — your log lives in your browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://sreenivas-sadhu-prabhakara.github.io/fuelbook/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Sreenivas Sadhu Prabhakara">
+  <meta name="keywords" content="fuel mileage calculator, fill up log, km/l calculator, fuel average calculator, cost per km, petrol mileage, bike mileage calculator, car mileage tracker, tank to tank mileage, mpg calculator, fuel log app">
+  <meta name="theme-color" content="#062E38" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FAF5EC" media="(prefers-color-scheme: light)">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="fuelbook">
+  <meta property="og:title" content="fuelbook — fuel mileage calculator &amp; fill-up log">
+  <meta property="og:description" content="Honest tank-to-tank km/L and true all-in cost per km for your vehicle. No account, no cloud, no ads — your log lives in your browser.">
+  <meta property="og:url" content="https://sreenivas-sadhu-prabhakara.github.io/fuelbook/">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:image" content="https://sreenivas-sadhu-prabhakara.github.io/fuelbook/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="fuelbook — a fuel-gauge dial from E to F with the tagline: honest tank-to-tank mileage">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="fuelbook — fuel mileage calculator &amp; fill-up log">
+  <meta name="twitter:description" content="Honest tank-to-tank km/L and true all-in cost per km for your vehicle. No account, no cloud, no ads.">
+  <meta name="twitter:image" content="https://sreenivas-sadhu-prabhakara.github.io/fuelbook/og-image.png">
+  <meta name="twitter:image:alt" content="fuelbook — a fuel-gauge dial from E to F with the tagline: honest tank-to-tank mileage">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Structured data (data block; not executable script) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "fuelbook",
+    "description": "A fuel mileage calculator and fill-up log that turns your fill-ups into honest tank-to-tank km/L and true all-in cost per km, using the full-to-full method with its limits stated on screen. Works offline; data stays in your browser.",
+    "url": "https://sreenivas-sadhu-prabhakara.github.io/fuelbook/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (modern web browser)",
+    "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Person", "name": "Sreenivas Sadhu Prabhakara" },
+    "softwareVersion": "0.1.0",
+    "featureList": [
+      "Fill-up log with FULL/PARTIAL fills, edit and delete",
+      "Tank-to-tank km/L by the full-to-full method, partials folded in",
+      "Fuel-only and all-in cost per km over the same honest window",
+      "Expense log: service, insurance, tyres, other",
+      "km/L trend chart with trailing-3-tank average",
+      "km+L or mi+gal unit mode and free-text currency symbol",
+      "CSV export and a printable one-page summary",
+      "100% offline — data never leaves your browser"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I calculate my vehicle's real mileage (km/L)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the full-to-full method: fill the tank completely and note the odometer. Next time you fill completely, divide the kilometres travelled by the litres it took to refill. That works because a full tank is the only repeatable reference point. fuelbook automates this over your whole log, folding partial fill-ups into the correct tank segment."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my fuel log private? Does fuelbook work offline?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. fuelbook has no account, no cloud, and no analytics. Its Content-Security-Policy sets connect-src to none, so the browser itself blocks any network send. Your log lives only in this browser's localStorage; CSV export is your backup."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does my km/L change from tank to tank?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Pump auto-cutoffs stop at slightly different levels, so what counts as 'full' varies a little each time. That makes any single tank's figure wobble by a few percent. Trust the lifetime line, computed across many tanks, over any one tank's number."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the true cost per km of my vehicle?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fuel alone understates it. fuelbook computes fuel-only cost per km and an all-in figure that adds service, insurance, tyres and other expenses over the same first-full-to-last-full window, so both numbers cover exactly the same kilometres."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-row">
+      <span class="brand">
+        <svg class="brand-dial" viewBox="0 0 64 44" aria-hidden="true" focusable="false">
+          <path d="M8 36 A26 26 0 0 1 56 36" fill="none" class="dial-arc"/>
+          <line x1="8"  y1="36" x2="8"  y2="30" class="dial-tick"/>
+          <line x1="14" y1="21" x2="18" y2="25" class="dial-tick"/>
+          <line x1="32" y1="10" x2="32" y2="16" class="dial-tick"/>
+          <line x1="50" y1="21" x2="46" y2="25" class="dial-tick"/>
+          <line x1="56" y1="36" x2="56" y2="30" class="dial-tick"/>
+          <line x1="32" y1="36" x2="52" y2="22" class="dial-needle"/>
+          <circle cx="32" cy="36" r="3.4" class="dial-hub"/>
+        </svg>
+        <span class="brand-name">fuelbook</span>
+      </span>
+      <span class="header-note">no account · no cloud · no ads</span>
+    </div>
+  </header>
+
+  <div id="sample-banner" class="sample-banner" hidden>
+    <div class="wrap sample-row">
+      <strong>SAMPLE DATA</strong>
+      <span>Every entry below is invented demo data — not real prices or real vehicle figures.</span>
+      <button type="button" id="btn-clear-sample" class="btn btn-small">Clear and start my log</button>
+    </div>
+  </div>
+
+  <main id="main" class="wrap">
+
+    <section class="hero" aria-labelledby="page-h1">
+      <h1 id="page-h1">Fuel Mileage Calculator &amp; Fill-Up Log — True km/L and Cost per km, Tank to Tank</h1>
+      <p class="lede">Log every fill-up; fuelbook turns it into honest tank-to-tank mileage and the true all-in cost of every kilometre — using the full-to-full method, with its limits stated right here on screen.</p>
+      <p class="privacy-line">Private by construction: this page's security policy blocks all network sends, so your log cannot leave this browser.</p>
+      <div class="hero-actions">
+        <button type="button" id="btn-sample" class="btn btn-primary">See it with a sample log</button>
+        <a class="btn btn-ghost" href="#fillups">Add my first fill-up</a>
+      </div>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section aria-labelledby="h-dash">
+      <h2 id="h-dash">Dashboard</h2>
+      <div id="stats-grid" class="stats-grid" aria-live="polite"></div>
+      <p id="excluded-note" class="note" hidden></p>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section aria-labelledby="h-trend">
+      <h2 id="h-trend">Tank-to-tank trend</h2>
+      <div id="chart" class="chart-box"></div>
+      <p id="chart-summary" class="visually-hidden" aria-live="polite"></p>
+      <p id="trend-note" class="trend-note" hidden></p>
+      <p class="note">One point per full-to-full tank. The dashed line is your trailing 3-tank average<span id="claimed-legend" hidden>; the dotted line is your claimed figure, as entered by you</span>.</p>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section id="fillups" aria-labelledby="h-fills">
+      <h2 id="h-fills">Fill-up log</h2>
+      <p class="note">Manual entry only — fuelbook has no receipt OCR, no OBD/Bluetooth, and no GPS. You type it, it stays yours.</p>
+      <form id="fill-form" class="entry-form" novalidate>
+        <div class="form-grid">
+          <label>Date
+            <input id="f-date" name="date" type="date" required>
+          </label>
+          <label><span data-label="odo">Odometer (km)</span>
+            <input id="f-odo" name="odo" type="text" inputmode="decimal" placeholder="12410" required>
+          </label>
+          <label><span data-label="vol">Litres</span>
+            <input id="f-litres" name="litres" type="text" inputmode="decimal" placeholder="9.84" required>
+          </label>
+          <label><span data-label="amt">Total amount</span>
+            <input id="f-amount" name="amount" type="text" inputmode="decimal" placeholder="1033.20" required>
+          </label>
+          <fieldset class="fill-kind">
+            <legend>Fill type</legend>
+            <label class="radio"><input type="radio" name="fillkind" id="f-full" value="full" checked> FULL — pump cut off, tank is full</label>
+            <label class="radio"><input type="radio" name="fillkind" id="f-partial" value="partial"> PARTIAL — topped up some amount</label>
+          </fieldset>
+          <label class="span2">Note (optional)
+            <input id="f-note" name="note" type="text" maxlength="120" placeholder="highway trip, new pump…">
+          </label>
+        </div>
+        <p id="fill-derived" class="note" hidden></p>
+        <p id="fill-error" class="error" role="alert" hidden></p>
+        <div class="form-actions">
+          <button type="submit" id="fill-submit" class="btn btn-primary">Add fill-up</button>
+          <button type="button" id="fill-cancel" class="btn btn-ghost" hidden>Cancel edit</button>
+        </div>
+      </form>
+      <div class="table-scroll">
+        <table class="log-table" id="fills-table">
+          <caption class="visually-hidden">Fill-up entries, newest first</caption>
+          <thead>
+            <tr><th scope="col">Date</th><th scope="col" data-label="odo2">Odometer</th><th scope="col" data-label="vol2">Litres</th><th scope="col">Amount</th><th scope="col" data-label="ppu">Price/L</th><th scope="col">Type</th><th scope="col">Note</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
+          </thead>
+          <tbody id="fills-body"></tbody>
+        </table>
+      </div>
+      <p id="fills-empty" class="note">No fill-ups yet. Add your first full fill above — km/L appears after your second full fill.</p>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section aria-labelledby="h-exp">
+      <h2 id="h-exp">Other expenses</h2>
+      <p class="note">Service, insurance, tyres and the rest — they join the all-in cost per km over the same first-full-to-last-full window as your fuel.</p>
+      <form id="expense-form" class="entry-form" novalidate>
+        <div class="form-grid">
+          <label>Date
+            <input id="e-date" name="date" type="date" required>
+          </label>
+          <label>Category
+            <select id="e-cat" name="category">
+              <option value="service">Service</option>
+              <option value="insurance">Insurance</option>
+              <option value="tyres">Tyres</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label><span data-label="amt2">Amount</span>
+            <input id="e-amount" name="amount" type="text" inputmode="decimal" placeholder="1200.00" required>
+          </label>
+          <label class="span2">Note (optional)
+            <input id="e-note" name="note" type="text" maxlength="120" placeholder="oil + filter…">
+          </label>
+        </div>
+        <p id="expense-error" class="error" role="alert" hidden></p>
+        <div class="form-actions">
+          <button type="submit" id="expense-submit" class="btn btn-primary">Add expense</button>
+          <button type="button" id="expense-cancel" class="btn btn-ghost" hidden>Cancel edit</button>
+        </div>
+      </form>
+      <div class="table-scroll">
+        <table class="log-table" id="expenses-table">
+          <caption class="visually-hidden">Expense entries, newest first</caption>
+          <thead>
+            <tr><th scope="col">Date</th><th scope="col">Category</th><th scope="col">Amount</th><th scope="col">Note</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Actions</span></th></tr>
+          </thead>
+          <tbody id="expenses-body"></tbody>
+        </table>
+      </div>
+      <p id="expenses-empty" class="note">No expenses yet.</p>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section aria-labelledby="h-method" class="method-card">
+      <h2 id="h-method">The method, in plain words</h2>
+      <p><strong>Full-to-full:</strong> a mileage segment runs between two consecutive FULL fills. Segment km/L = kilometres between them ÷ every litre poured after the previous FULL through this FULL (partial top-ups in between are folded in and the segment is labelled <em>includes partial</em>). It works because a full tank is the only repeatable reference point.</p>
+      <h3>Its honest limits</h3>
+      <ul class="limits">
+        <li>km/L exists only <em>between two FULL fills</em>. A log of partials shows spend totals, but fuelbook refuses to guess mileage — it says "need two full fills to compute".</li>
+        <li>Entries before your first FULL or after your last FULL are excluded from km/L, with the reason shown on screen. They join after your next full fill.</li>
+        <li>"Full" varies with the pump's auto-cutoff, so single-tank figures wobble a few percent. Trust the lifetime line over any one tank.</li>
+        <li>All-in cost per km covers only the first-FULL-to-last-FULL window; expenses dated outside it are flagged and join after the next full fill.</li>
+        <li>The trend note is a prompt to check tyre pressure, service due, or fuel quality — never a mechanical diagnosis.</li>
+      </ul>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section aria-labelledby="h-export">
+      <h2 id="h-export">Export &amp; backup</h2>
+      <p class="note">Your log lives only in this browser's storage — clearing site data erases it. CSV export is your backup and your handoff.</p>
+      <div class="export-actions">
+        <button type="button" id="btn-csv-fills" class="btn">Download fill-ups CSV</button>
+        <button type="button" id="btn-csv-expenses" class="btn">Download expenses CSV</button>
+        <button type="button" id="btn-print" class="btn">Print one-page summary</button>
+      </div>
+    </section>
+
+    <div class="arc-divider" aria-hidden="true"><svg viewBox="0 0 60 14"><path d="M4 12 A40 40 0 0 1 56 12" fill="none"/></svg></div>
+
+    <section aria-labelledby="h-settings">
+      <h2 id="h-settings">Settings</h2>
+      <form id="settings-form" class="entry-form" novalidate>
+        <div class="form-grid">
+          <label>Vehicle name
+            <input id="s-name" type="text" maxlength="40" placeholder="My scooter">
+          </label>
+          <label>Vehicle type
+            <select id="s-type">
+              <option value="two-wheeler">Two-wheeler</option>
+              <option value="car">Car</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+          <label>Currency symbol
+            <input id="s-currency" type="text" maxlength="4" placeholder="₹">
+          </label>
+          <label>Units
+            <select id="s-units">
+              <option value="metric">km + litres (km/L, L/100km)</option>
+              <option value="us">miles + gallons (mpg)</option>
+            </select>
+          </label>
+          <label>Digit grouping
+            <select id="s-grouping">
+              <option value="indian">Indian (12,34,567)</option>
+              <option value="plain">Plain (1,234,567)</option>
+            </select>
+          </label>
+          <label><span data-label="claimed">Claimed km/L (optional)</span>
+            <input id="s-claimed" type="text" inputmode="decimal" placeholder="as entered by you">
+          </label>
+        </div>
+        <p class="note">Units change labels and arithmetic only — stored entries are never converted. The claimed figure is a personal reference line, as entered by you; fuelbook ships no claimed-mileage database.</p>
+        <div class="form-actions">
+          <button type="button" id="btn-erase" class="btn btn-danger">Erase all data</button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- printable one-page summary (visible only in print) -->
+  <section id="print-summary" class="print-only" aria-hidden="true">
+    <h2>fuelbook — summary</h2>
+    <p id="print-meta"></p>
+    <div id="print-stats"></div>
+    <table class="log-table" id="print-segments">
+      <thead><tr><th>Tank (full → full)</th><th id="print-km-h">km</th><th id="print-vol-h">Litres</th><th id="print-eff-h">km/L</th><th>Notes</th></tr></thead>
+      <tbody id="print-segments-body"></tbody>
+    </table>
+    <p id="print-footer" class="note"></p>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>Disclaimer:</strong> fuelbook is an informational calculator over numbers you enter yourself; it is not financial, mechanical, or professional advice. Figures are only as accurate as your entries and the full-to-full method's stated limits. Software provided "as is", without warranty of any kind (MIT License). Verify anything that matters with a professional.</p>
+      <p>Private by design: no account, no cloud, no analytics. The page's Content-Security-Policy (<code>connect-src 'none'</code>) makes the browser itself block any network send. Data stays in this browser's localStorage; CSV export is your backup.</p>
+      <p>© 2026 Sreenivas Sadhu Prabhakara · MIT License · v0.1.0</p>
+    </div>
+  </footer>
+
+  <script src="data/engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
