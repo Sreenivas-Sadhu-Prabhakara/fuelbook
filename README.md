@@ -4,6 +4,8 @@
 
 Live app: **https://sreenivas-sadhu-prabhakara.github.io/fuelbook/**
 
+![fuelbook](./preview.png)
+
 People argue endlessly about real vs claimed mileage. fuelbook settles it with the only
 method that actually works for manual logging — **full-to-full**: fill the tank until the
 pump cuts off, note the odometer, and next full fill divide the kilometres travelled by
@@ -44,7 +46,7 @@ Use it online at the link above, or run it locally:
 ```sh
 git clone https://github.com/Sreenivas-Sadhu-Prabhakara/fuelbook.git
 cd fuelbook
-python3 -m http.server 8080   # or any static server; file:// also works
+python3 -m http.server 8080   # or any static server
 ```
 
 Then open `http://localhost:8080/`. To run the self-tests (Node 20+):

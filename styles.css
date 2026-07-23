@@ -218,7 +218,7 @@ section { margin: 2.2rem 0; }
 .c-avg { fill: none; stroke: var(--needle); stroke-width: 2; stroke-dasharray: 7 6; }
 .c-claimed { fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 2 5; }
 .c-dot { fill: var(--primary); stroke: var(--bg); stroke-width: 1.5; }
-.c-dot-partial { fill: var(--sand); stroke: var(--ink); stroke-width: 1.2; }
+.c-dot-partial { fill: var(--needle); stroke: var(--ink); stroke-width: 1.5; }
 .c-grid { stroke: var(--line); stroke-width: 1; }
 .c-text { fill: var(--muted); font-family: var(--sans); font-size: 11px; font-variant-numeric: tabular-nums; }
 .c-text-strong { fill: var(--ink); font-family: var(--sans); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -253,7 +253,7 @@ input, select {
   padding: 9px 11px;
   min-width: 0;
 }
-input::placeholder { color: var(--muted); opacity: 0.75; }
+input::placeholder { color: var(--muted); opacity: 1; }
 fieldset.fill-kind {
   border: 1.5px dashed var(--line);
   border-radius: var(--radius-sm);
